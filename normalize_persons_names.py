@@ -11,7 +11,7 @@ def hash_merged_names(merged_names):
     return dmeta_merged_names
 
 def is_name_equal(name1, name2):
-    if doublemetaphone(name1)[0] == doublemetaphone(name2)[0] or doublemetaphone(name1)[0] == doublemetaphone(name2)[1] or doublemetaphone(name1)[1] == doublemetaphone(name2)[0]:
+    if doublemetaphone(name1)[0] == doublemetaphone(name2)[0] or (doublemetaphone(name1)[0] == doublemetaphone(name2)[1] and doublemetaphone(name1)[1] == doublemetaphone(name2)[0]):
         return 1
     else:
         return 0

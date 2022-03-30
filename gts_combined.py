@@ -2,14 +2,13 @@
 
 from metaphone import doublemetaphone
 from collections import Counter
-from boilerpy3 import extractors
+from newspaper import Article
 from googletrans import Translator
 import stanza
 import json
 import sys
 
 translator = Translator()
-extractor = extractors.ArticleExtractor()
 
 def hash_merged_names(merged_names):
     dmeta_merged_names = []
@@ -19,7 +18,7 @@ def hash_merged_names(merged_names):
     return dmeta_merged_names
 
 def is_name_equal(name1, name2):
-    if doublemetaphone(name1)[0] == doublemetaphone(name2)[0] or doublemetaphone(name1)[0] == doublemetaphone(name2)[1] or doublemetaphone(name1)[1] == doublemetaphone(name2)[0]:
+    if doublemetaphone(name1)[0] == doublemetaphone(name2)[0] or (doublemetaphone(name1)[0] == doublemetaphone(name2)[1] and doublemetaphone(name1)[1] == doublemetaphone(name2)[0]):
         return 1
     else:
         return 0
@@ -58,7 +57,11 @@ def merge_names(names):
 def extract(url):
 
     try:
-        content = extractor.get_content_from_url(url)
+        
+        story = Article(url)
+        story.download()
+        story.parse()
+        content = story.text
     except:
         print("This URL did not return a status code of 200. Try a different URL.")
         return

@@ -12,6 +12,7 @@ def extract(url):
 
     try:
         content = extractor.get_content_from_url(url)
+        print(content)
     except:
         print("This URL did not return a status code of 200. Try a different URL.")
         return
