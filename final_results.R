@@ -1,0 +1,5 @@
+Titles <- c(P=0.68, R=0.68, TNR=0.97, F=0.68, A=0.95, BA=0.83)
+Text <- c(P=0.91, R=0.81, TNR=0.99, F=0.86, A=0.98, BA=0.90)
+Hybrid <- c(P=0.96, R=0.72, TNR=1.0, F=0.82, A=0.97, BA=0.86)
+all <- rbind(Titles, Text, Hybrid)
+barplot(all, beside = TRUE, main = "News similarity measures", xlab = "Metric", ylim = c(0,1), ylab = "Value", col = c("dodgerblue1", "darkolivegreen1", "dodgerblue4"), legend.text = rownames(all),  xlim = c(0,26), args.legend = list(cex=0.8,x = "topright"))
