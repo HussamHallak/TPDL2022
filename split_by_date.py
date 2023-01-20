@@ -7,27 +7,47 @@ Created on Sat Jul  2 08:19:52 2022
 import os
 import sys
 from newspaper import Article   
+import requests
+import json
 
 def split(links):
     exists = os.path.exists("output")
     if not exists:
         # Create a new directory because it does not exist
         os.makedirs("output")
+
+    exists = os.path.exists("output_redo")
+    if not exists:
+        # Create a new directory because it does not exist
+        os.makedirs("output_redo")
+
     for link in links:
+        response = requests.get(link)
+        if response.status_code == 200:
+            final_link = link
+        else:
+            final_link = response.url 
+
         try:
-            story = Article(link)
+            story = Article(final_link)
             story.download()
             story.parse()
             date_time = str(story.publish_date)
             split_date = date_time.split()  
             date = split_date[0]
-            if date != "None":
-                with open("output/" + date + ".txt", "a", encoding = 'utf-8') as output_file:
-                    output_file.write(link + "\n")
+            # article = {"url": link, "final_url": final_link, "publish_date": date, "title": story.title, "text": story.text}
+            # with open("output/" + date + ".json", "a", encoding = 'utf-8') as output_file:
+            #     json.dump(article, output_file)
+            #     output_file.write("\n")
+            with open("output/" + date + ".txt", "a", encoding = 'utf-8') as output_file:
+                output_file.write(link + "\n")
         except:
-            print("This URL did not return a status code of 200. Try a different URL.")
-            print(link)
-            
+            print("The script was not able to extract published date. Moving the url to be crawled later.")
+            print("link: ", link)
+            print("status code: ", response.status_code)
+            print("final link: ", final_link)
+            with open("output_redo/" + "links_to_redo" + ".txt", "a", encoding = 'utf-8') as output_redo:
+                    output_redo.write(link + "\n")            
         continue
 
 if __name__ == "__main__":

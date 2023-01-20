@@ -31,10 +31,8 @@ if __name__ == "__main__":
         url = sys.argv[1]
         file_name = sys.argv[2]
         output_urls = extract_links(url)
-        output = get_redirects(output_urls)
-        output = set(output)
+        #output = get_redirects(output_urls)
+        output = set(output_urls)
         with open(file_name, 'a', encoding='utf-8') as output_file:
             for link in output:
                 output_file.write(link + '\n')
-        
-
